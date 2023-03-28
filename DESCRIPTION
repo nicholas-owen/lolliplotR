@@ -1,8 +1,8 @@
 Package: lolliplotR
 Type: Package
 Title: Creates Lollipop Plots Of Variant Data On Transcript and Peptides
-Version: 0.1.0
-Author:  person("Nicholas", "Owen", , "nicholas.owen1@gmail.com", role = c("aut", "cre"),
+Version: 0.1.1
+Author: person("Nicholas", "Owen", , "nicholas.owen1@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5598-6274"))
 Maintainer: Nicholas Owen <nicholas.owen1@gmail.com>
 Description: This package creates elegand plots of variant information on gene/transcript layouts as well as peptide sequences. By configuring intron sizes to be cooerced to smaller representations, an intron/exon structure plot can be overlayed with variant information, either provided or downloaded from several sources.
