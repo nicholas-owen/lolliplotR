@@ -1,9 +1,9 @@
 
-#' Title
+#' Get ClinVar Variants
 #'
 #' @param gene_of_interest
 #'
-#' @return
+#' @return dataframe of tidied NCBI ClinVar variants
 #' @export
 #'
 #' @examples

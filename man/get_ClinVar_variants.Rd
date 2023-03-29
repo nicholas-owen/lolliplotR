@@ -2,13 +2,16 @@
 % Please edit documentation in R/bionickomics_utils.r
 \name{get_ClinVar_variants}
 \alias{get_ClinVar_variants}
-\title{Title}
+\title{Get ClinVar Variants}
 \usage{
 get_ClinVar_variants(gene_of_interest)
 }
 \arguments{
 \item{gene_of_interest}{}
 }
+\value{
+dataframe of tidied NCBI ClinVar variants
+}
 \description{
-Title
+Get ClinVar Variants
 }
