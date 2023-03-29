@@ -28,7 +28,7 @@ create_peptide_lolliplot<-function(gene_name=GOI, variant_filename=varFile, vari
   colPal<-RColorBrewer::brewer.pal(nlevels(goiInfo$names), exonPalette)
   # scales::show_col(colPal)
   goiInfo$fill<-colorRampPalette(colPal)(nlevels(goiInfo$names))[goiInfo$names]
-  goiGR<-makeGRangesFromDataFrame(goiInfo,
+  goiGR<-GenomicRanges::makeGRangesFromDataFrame(goiInfo,
                                   keep.extra.columns=TRUE,
                                   ignore.strand=TRUE,
                                   seqinfo=NULL,
@@ -42,7 +42,7 @@ create_peptide_lolliplot<-function(gene_name=GOI, variant_filename=varFile, vari
                                   starts.in.df.are.0based=FALSE)
   names(goiGR)<-goiInfo$names
   goiGR$alpha<-0.5
-  variantGR <- GRanges(unique(seqnames(goiGR)), IRanges(dfVariants$aa_pos, width=1, score=dfVariants$freq,SNPsideID=ifelse(dfVariants$phenotype=="1", "top", "bottom"),names=dfVariants$aa_change, Type=dfVariants$Type))
+  variantGR <- GenomicRanges::GRanges(unique(seqnames(goiGR)), IRanges(dfVariants$aa_pos, width=1, score=dfVariants$freq,SNPsideID=ifelse(dfVariants$phenotype=="1", "top", "bottom"),names=dfVariants$aa_change, Type=dfVariants$Type))
   variantGR$Type<-as.factor(variantGR$Type)
 
   if (color_by_data=="published"){
@@ -72,8 +72,8 @@ create_peptide_lolliplot<-function(gene_name=GOI, variant_filename=varFile, vari
                           goiInfo$ensembl_peptide_id[1], "_peptide_varmap.svg")
   message("Saving to: ", output_filename)
   svg(output_filename, width = pnas.width.double.column.inches*3, height = 2*pnas.height.inches/1.1)
-  lolliplot(SNP.gr = variantGR, features = goiGR, ylab = "Variant Frequency", legend = legends, xaxis = xaxis)
+  trackViewer::lolliplot(SNP.gr = variantGR, features = goiGR, ylab = "Variant Frequency", legend = legends, xaxis = xaxis)
   dev.off()
-  lolliplot(SNP.gr = variantGR, features = goiGR, ylab = "Variant Frequency", legend = legends, xaxis = xaxis)
+  trackViewer::lolliplot(SNP.gr = variantGR, features = goiGR, ylab = "Variant Frequency", legend = legends, xaxis = xaxis)
 }
 

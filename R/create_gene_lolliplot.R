@@ -30,7 +30,7 @@ create_gene_lolliplot<-function(gene_name=GOI, variant_filename=varFile, variant
   goiInfo$names <- paste0("exon ",goiInfo$rank)
   colPal<-RColorBrewer::brewer.pal(dim(goiInfo)[1], exonPalette)
   goiInfo$fill<-colorRampPalette(colPal)(dim(goiInfo)[1])
-  goiGR<-makeGRangesFromDataFrame(goiInfo,
+  goiGR<-GenomicRanges::makeGRangesFromDataFrame(goiInfo,
                                   keep.extra.columns=TRUE,
                                   ignore.strand=FALSE,
                                   seqinfo=NULL,
@@ -81,9 +81,9 @@ create_gene_lolliplot<-function(gene_name=GOI, variant_filename=varFile, variant
                           goiInfo$ensembl_transcript_id[1], "_transcript_varmap.svg")
   message("Saving to: ", output_filename)
   svg(output_filename, width = pnas.width.double.column.inches*3, height = 2*pnas.height.inches/1.1)
-  lolliplot(SNP.gr = variantGR, features = goiGR, ylab = "Variant Frequency", legend = legends)
+  trackViewer::lolliplot(SNP.gr = variantGR, features = goiGR, ylab = "Variant Frequency", legend = legends)
   dev.off()
-  lolliplot(SNP.gr = variantGR, features = goiGR, ylab = "Variant Frequency", legend = legends)
+  trackViewer::lolliplot(SNP.gr = variantGR, features = goiGR, ylab = "Variant Frequency", legend = legends)
 }
 
 

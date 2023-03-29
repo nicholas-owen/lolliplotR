@@ -41,13 +41,13 @@ tidy_ClinVar<-function(df){
   df$variant<-gsub(" .*$", "", df$variant)
   df$cDNA_pos<-gsub("^.*?:","",df$Name)
   df$cDNA_pos<-gsub("c.", replacement = "", x=df$variant)
-  df$cDNA_pos<-str_first_number(df$cDNA_pos)
+  df$cDNA_pos<-strex::str_first_number(df$cDNA_pos)
   df$aa_pos<-gsub("^.*?:","",df$Name)
   df$aa_pos<-gsub("^.*\\(", "", df$aa_pos)
   df$aa_pos<-gsub(")", "", df$aa_pos)
   df$aa_change<-df$aa_pos
   df$aa_pos<-gsub("p.","", df$aa_pos)
-  df$aa_pos<-str_first_number(df$aa_pos)
+  df$aa_pos<-strex::str_first_number(df$aa_pos)
   df$freq<-df$NumberSubmitters
   df$published<-1
   df$phenotype<-1
@@ -105,7 +105,7 @@ download_ClinVar<-function(){
 import_ClinVar<-function(ClinVarFile, GeneOfInterest, pathogenic=TRUE){
   # import file
   message("Importing ClinVar data..")
-  dfClinVar<-read_tsv(ClinVarFile, show_col_types = FALSE)
+  dfClinVar<-readr::read_tsv(ClinVarFile, show_col_types = FALSE)
   # subset on GOI
   dfClinVar<-dfClinVar[dfClinVar$GeneSymbol==GeneOfInterest,]
   if (pathogenic==TRUE){
@@ -131,7 +131,7 @@ get_variants_ClinVar<-function(gene_of_interest=GOI, pathogenic=TRUE){
   url<-paste0("https://www.ncbi.nlm.nih.gov/clinvar?term=", gene_of_interest,
               "[sym]AND%22clinsig%20pathogenic%22[Properties]")
   url<-paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=clinvar&term=", gene_of_interest,"[gene]&retmax=500&retmode=json")
-  res<- GET(url)
+  res<- httr::GET(url)
   # if (res$status_code!=200){
   #   message("Error communicating with ClinVar, please try again later. Error code: ",res$status_code)
   #   stop()
@@ -141,7 +141,7 @@ get_variants_ClinVar<-function(gene_of_interest=GOI, pathogenic=TRUE){
   stop_for_status(res)
 
   rawToChar(res$content)
-  variantsGOI <- fromJSON(rawToChar(res$content))
+  variantsGOI <- jsonlite::fromJSON(rawToChar(res$content))
   dfGOIVars<-as.data.frame(variantsGOI[4])
   ## TO DO
 
@@ -179,7 +179,7 @@ process_HuVarOutput<-function(filename=huvarfile, phenotypes_to_keep="none"){
   huVarInfo<-filter(huVarInfo, grepl(paste(phenotypes_to_keep, collapse='|'), Disease...Tissue..COSMIC.))
   #}
   huVarInfo$cDNA_pos<-gsub("c.", replacement = "", x=huVarInfo$variant)
-  huVarInfo$cDNA_pos<-str_first_number(huVarInfo$cDNA_pos)
+  huVarInfo$cDNA_pos<-strex::str_first_number(huVarInfo$cDNA_pos)
   huVarInfo$freq<-1
   huVarInfo$phenotype<-ifelse(huVarInfo$Disease...Tissue..COSMIC.=="Leber congenital amaurosis 8", 0, 1)
   huVarInfo$published<-1
@@ -204,10 +204,10 @@ get_gene_variants<-function(gene_name=GOI){
   message("Requesting known disease causing variants from ClinicalTables..")
   url<-paste0("https://clinicaltables.nlm.nih.gov/api/variants/v4/search?terms=", GOI,
               "&sf=GeneSymbol&maxList=500&df=AlternateAllele,AlleleID,AminoAcidChange,Chromosome,ChromosomeAccession,Cytogenetic,dbSNP,GeneID,GeneSymbol,GenomicLocation,hgnc_id,hgnc_id_num,HGVS_c,HGVS_exprs,HGVS_p,Name,NucleotideChange,phenotypes,phenotype,PhenotypeIDS,PhenotypeList,RefSeqID,ReferenceAllele,Start,Stop,Type,VariationID")
-  res<- GET(url)
+  res<- httr::GET(url)
 
   rawToChar(res$content)
-  variantsGOI <- fromJSON(rawToChar(res$content))
+  variantsGOI <- jsonlite::fromJSON(rawToChar(res$content))
   dfGOIVars<-as.data.frame(variantsGOI[4])
   names(dfGOIVars)<-c("AlternateAllele","AlleleID","AminoAcidChange","Chromosome","ChromosomeAccession","Cytogenetic","dbSNP","GeneID","GeneSymbol","GenomicLocation","hgnc_id","hgnc_id_num","HGVS_c","HGVS_exprs","HGVS_p","Name","NucleotideChange","phenotypes","phenotype","PhenotypeIDS","PhenotypeList","RefSeqID","ReferenceAllele","Start","Stop","Type","VariationID")
 
@@ -273,7 +273,7 @@ rescale_variants<-function(variantInfo, transcript_grange, minIntronSize){
   }
   }
 
-  variantGR <- GRanges(unique(seqnames(transcript_grange)), IRanges(variantInfo$cDNA_pos, width=1, score=variantInfo$freq,SNPsideID=ifelse(variantInfo$phenotype=="1", "top", "bottom"),names=variantInfo$variant, Type=variantInfo$Type))
+  variantGR <- GenomicRanges::GRanges(unique(seqnames(transcript_grange)), IRanges(variantInfo$cDNA_pos, width=1, score=variantInfo$freq,SNPsideID=ifelse(variantInfo$phenotype=="1", "top", "bottom"),names=variantInfo$variant, Type=variantInfo$Type))
   #variantGR$color <- ifelse(variantInfo$published=="1", "red", "black")
   #variantGR$label <- as.character(1:length(variantGR))
   #variantGR$alpha <- sample(100:255, nrow(variantInfo), replace = TRUE)/255
@@ -304,9 +304,9 @@ rescale_variants<-function(variantInfo, transcript_grange, minIntronSize){
 rescale_introns<-function(grange, minIntronSize){
   #granges_reduce_introns(grange, minIntronSize)
   message("Moving start to zero based positions..")
-  CDSstart<-start(grange)[1]
-  start(grange)<-start(grange)-CDSstart
-  end(grange)<-end(grange)-CDSstart
+  CDSstart<-GenomicRanges::start(grange)[1]
+  GenomicRanges::start(grange)<-GenomicRanges::start(grange)-CDSstart
+  GenomicRanges::end(grange)<-GenomicRanges::end(grange)-CDSstart
 
   if (minIntronSize!="no"){
     message("Rescaling introns to size: ", minIntronSize)
@@ -315,14 +315,14 @@ rescale_introns<-function(grange, minIntronSize){
     exonTotals<-list()
     count<-0
     for (i in 1:length(grange)){
-      exonTotals[i]<-width(grange)[i] + count
-      count=count + width(grange)[i]
+      exonTotals[i]<-GenomicRanges::width(grange)[i] + count
+      count=count + GenomicRanges::width(grange)[i]
     }
 
     for (i in 2:length(grange)[1]){
-      width<-width(grange)[i]
-      start(grange)[i]<-end(grange)[i-1]+minIntronSize
-      end(grange)[i]<-start(grange)[i]+width-1
+      width<-GenomicRanges::width(grange)[i]
+      GenomicRanges::start(grange)[i]<-GenomicRanges::end(grange)[i-1]+minIntronSize
+      GenomicRanges::end(grange)[i]<-GenomicRanges::start(grange)[i]+width-1
     }
     }  else {
       message("Maintaining introns at original sizes.")
@@ -371,23 +371,23 @@ get_EnsemblIDs<-function(gene_of_interest=GOI){
 
   if (file.exists(cachedTxDataFile)){
     message("Cached EnsemblTxData file found.. Loading..")
-    idconvert<-read_csv(cachedTxDataFile, show_col_types = FALSE)
+    idconvert<-readr::read_csv(cachedTxDataFile, show_col_types = FALSE)
   } else {
     message("Contacting Ensembl, please be patient.")
     ensembl <- tryCatch({
-      useEnsembl(biomart = "genes", dataset = "hsapiens_gene_ensembl")
+      biomaRt::useEnsembl(biomart = "genes", dataset = "hsapiens_gene_ensembl")
     },  error = function(e) {
-      useEnsembl(biomart = "genes",
+      biomaRt::useEnsembl(biomart = "genes",
                  dataset = "hsapiens_gene_ensembl"
       )
     })
     #ensembl <- useEnsembl(biomart = "genes", dataset = "hsapiens_gene_ensembl")
     message("Querying Ensembl database..")
-      idconvert<-getBM(attributes = c('entrezgene_id', 'external_gene_name', "ensembl_gene_id","chromosome_name", "start_position","end_position","strand","hgnc_symbol","ucsc","band", "ensembl_transcript_id", "transcript_is_canonical", "ensembl_exon_id"),
+      idconvert<-biomaRt::getBM(attributes = c('entrezgene_id', 'external_gene_name', "ensembl_gene_id","chromosome_name", "start_position","end_position","strand","hgnc_symbol","ucsc","band", "ensembl_transcript_id", "transcript_is_canonical", "ensembl_exon_id"),
                        filters = 'external_gene_name',
                        values = gene_of_interest,
                        mart = ensembl)
-    write_csv(file = cachedTxDataFile, x = idconvert)
+      readr::write_csv(file = cachedTxDataFile, x = idconvert)
     message("Saved Ensembl Tx data as cache.")
   }
 
@@ -403,14 +403,14 @@ get_EnsemblIDs<-function(gene_of_interest=GOI){
   # get exon info for GOI
   if (file.exists(cachedExDataFile)){
     message("Cached EnsemblExData file found.. Loading..")
-    exon_info<-read_csv(cachedExDataFile, show_col_types = FALSE)
+    exon_info<-readr::read_csv(cachedExDataFile, show_col_types = FALSE)
   } else {
     message("Querying Ensembl Ex database..")
-    exon_info<-getBM(attributes = c("external_gene_name",	"ensembl_exon_id","ensembl_transcript_id","transcript_count", "rank" ,"strand","chromosome_name", "exon_chrom_start", "exon_chrom_end","cds_start", "cds_end", "cds_length"),
+    exon_info<-biomaRt::getBM(attributes = c("external_gene_name",	"ensembl_exon_id","ensembl_transcript_id","transcript_count", "rank" ,"strand","chromosome_name", "exon_chrom_start", "exon_chrom_end","cds_start", "cds_end", "cds_length"),
                      filters = 'ensembl_transcript_id',
                      values = ensemblTXID,
                      mart = ensembl)
-    write_csv(file = cachedExDataFile, x = exon_info)
+    readr::write_csv(file = cachedExDataFile, x = exon_info)
     message("Saved Ensembl Ex data as cache.")
   }
 
@@ -423,7 +423,7 @@ get_EnsemblIDs<-function(gene_of_interest=GOI){
   }
   # sort output by exon rank
   exon_info<- exon_info %>%
-    arrange(rank)
+    dplyr::arrange(rank)
 
   return(exon_info)
 }
@@ -445,18 +445,18 @@ get_Ensembl_peptide<-function(gene_of_interest){
 
   if (file.exists(cachedPrDataFile)){
     message("Cached EnsemblPrData file found.. Loading..")
-    ens_protein<-read_csv(cachedPrDataFile, show_col_types = FALSE)
+    ens_protein<-readr::read_csv(cachedPrDataFile, show_col_types = FALSE)
   } else {
     message("Contacting Ensembl, please be patient.")
     ensembl <- tryCatch({
-      useEnsembl(biomart = "genes", dataset = "hsapiens_gene_ensembl")
+      biomaRt::useEnsembl(biomart = "genes", dataset = "hsapiens_gene_ensembl")
     },  error = function(e) {
-      useEnsembl(biomart = "genes",
+      biomaRt::useEnsembl(biomart = "genes",
                  dataset = "hsapiens_gene_ensembl"
       )
     })
     message("Querying Ensembl database..")
-    ens_gene<-getBM(attributes = c("external_gene_name", "ensembl_gene_id","chromosome_name", "hgnc_symbol", "ensembl_transcript_id", "transcript_is_canonical"),
+    ens_gene<-biomaRt::getBM(attributes = c("external_gene_name", "ensembl_gene_id","chromosome_name", "hgnc_symbol", "ensembl_transcript_id", "transcript_is_canonical"),
                      filters = 'external_gene_name',
                      values = gene_of_interest,
                      mart = ensembl)
@@ -464,7 +464,7 @@ get_Ensembl_peptide<-function(gene_of_interest){
     ens_gene<-subset(ens_gene, transcript_is_canonical=="1")
     ensemblTXID<-unique(ens_gene$ensembl_transcript_id)
     # get peptide info
-    ens_protein<-getBM(attributes = c('external_gene_name', "ensembl_gene_id", "ensembl_transcript_id", "transcript_is_canonical","chromosome_name",
+    ens_protein<-biomaRt::getBM(attributes = c('external_gene_name', "ensembl_gene_id", "ensembl_transcript_id", "transcript_is_canonical","chromosome_name",
                                      "interpro", "interpro_short_description", "interpro_start", "interpro_end","ensembl_peptide_id"
                                      #, "smart", "smart_start", "smart_end"
                                    ),
@@ -473,20 +473,20 @@ get_Ensembl_peptide<-function(gene_of_interest){
                      mart = ensembl)
     ensemblPEPID<-unique(ens_protein$ensembl_peptide_id)
     message("Canonical protein: ", ensemblPEPID)
-    ensemblPEPseq<-getSequence(id = ensemblPEPID, type = "ensembl_peptide_id", seqType = "peptide", mart = ensembl)
+    ensemblPEPseq<-biomaRt::getSequence(id = ensemblPEPID, type = "ensembl_peptide_id", seqType = "peptide", mart = ensembl)
     ensemblPEPlength<-nchar(ensemblPEPseq)[1]
     ens_protein<-rbind(ens_protein[1,], ens_protein)
     ens_protein$interpro[1]<-"peptide"
     ens_protein$interpro_short_description[1]<-"peptide"
     ens_protein$interpro_start[1]<-"1"
     ens_protein$interpro_end[1]<-ensemblPEPlength
-    write_csv(file = cachedPrDataFile, x = ens_protein)
+    readr::write_csv(file = cachedPrDataFile, x = ens_protein)
     message("Saved Ensembl protein data as cache.")
   }
 
   # sort output by interpro feature start
   ens_protein<- ens_protein %>%
-    arrange(interpro_start)
+    dplyr::arrange(interpro_start)
 
     return(ens_protein)
 }
