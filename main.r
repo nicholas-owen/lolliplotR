@@ -1,14 +1,14 @@
 #' Gene Variant Lolliplot
 #' ~~~~~~~~~~~~~~~~~~~~~~
-#' 
+#'
 #' Author: Nicholas Owen
 #' Github: github.com/nicholas-owen
-#' Email: 
+#' Email:
 #' Version: 0.001a
 #' Date: 2023-03-24
 #'
 #' Description:
-#' 
+#'
 #'
 #'
 
@@ -71,7 +71,7 @@ create_peptide_lolliplot(gene_name = GOI, dfVars, variant_input_type="df", exonH
 # 2. Using local variants file for gene of interest (GOI)
 # 2.1 HuVarDB variant info
 varFile<-"D:/Box Sync/Scripts/R/General/CRB1_HuVarDB.csv"
-create_gene_lolliplot(gene_name = GOI, varFile, variant_input_type="file", exonHeight, minIntronSize)
+create_gene_lolliplot(gene_name = GOI, varFile, variant_input_type="file", exonHeight, minIntronSize, varPalette=varPalette, color_by_data="type")
 
 # 2.2.i Using local variants file for gene of interest (GOI), colored by variant novelty
 varFile<-"./variant_info.csv"
@@ -105,10 +105,10 @@ exonPalette<-"Spectral"
 #outFile<-"testSMN1.svg"
 # huvarfile<-"./CRB1_var_info_HuVarbase.csv"
 # phenotypesToKeep<-c("Retinitis","Leber","Retinal")
-# 
+#
 # HuVarDB<-process_HuVarOutput(filename = huvarfile, phenotypes_to_keep = phenotypesToKeep)
 # write_csv(HuVarDB, file = "CRB1_HuVarDB.csv.gz")
-# 
+#
 
 
 # use provided GOI variant file
@@ -149,13 +149,12 @@ create_gene_lolliplot(gene_name = GOI, variantInfoDL, variant_input_type="df", e
 
 
 # TO DO
-# - protein domains 
+# - protein domains
 #https://www.ensembl.info/2015/06/01/biomart-or-how-to-access-the-ensembl-data-from-r/
-# domain_location_ENSG00000198763 <- getBM(attributes=c('ensembl_gene_id','ensembl_transcript_id','ensembl_peptide_id','interpro','interpro_start','interpro_end','pfam','pfam_start','pfam_end'), filters ='ensembl_gene_id', values ="ENSG00000198763", mart = ensembl) 
+# domain_location_ENSG00000198763 <- getBM(attributes=c('ensembl_gene_id','ensembl_transcript_id','ensembl_peptide_id','interpro','interpro_start','interpro_end','pfam','pfam_start','pfam_end'), filters ='ensembl_gene_id', values ="ENSG00000198763", mart = ensembl)
 
 # install_bitbucket("ibi_group/disgenet2r")
 # load_pack(disgenet2r)
 # get_disgenet_api_key(email = "n.owen@ucl.ac.uk", password = "****")
 # results <- gene2disease( gene = c( "CRB1"), verbose = TRUE, api_key = "7a24d5091759a68c4196d25f02a2bbdc6a14964e")
 
-  

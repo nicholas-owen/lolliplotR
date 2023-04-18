@@ -2,13 +2,16 @@
 % Please edit documentation in R/bionickomics_utils.r
 \name{tidy_ClinVar}
 \alias{tidy_ClinVar}
-\title{Title}
+\title{Tidy ClinVar data}
 \usage{
 tidy_ClinVar(df)
 }
 \arguments{
 \item{df}{}
 }
+\value{
+processed
+}
 \description{
-Title
+Tidy ClinVar data
 }

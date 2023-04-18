@@ -2,7 +2,7 @@
 % Please edit documentation in R/bionickomics_utils.r
 \name{process_HuVarOutput}
 \alias{process_HuVarOutput}
-\title{Process variants from HuVar output}
+\title{Process variants from HuVarBase output}
 \usage{
 process_HuVarOutput(filename = huvarfile, phenotypes_to_keep = "none")
 }
@@ -15,5 +15,10 @@ process_HuVarOutput(filename = huvarfile, phenotypes_to_keep = "none")
 dataframe of cleaned and filtered HuVar single nucleotide variants
 }
 \description{
-Process variants from HuVar output
+\code{process_HuVarOutput} allows the importing of raw HuVarBase variant information to be suitable for input into lolliplotR.
+}
+\details{
+For further information on HuVarBase, check out \href{https://doi.org/10.1371/journal.pone.0210475}{HuVarBase: A human variant database with comprehensive information at gene and protein levels}
+
+\emph{Note}: currently the HuVarBase server is under maintenance -  information can be copied and pasted into text format and used within this function.
 }

@@ -2,13 +2,16 @@
 % Please edit documentation in R/bionickomics_utils.r
 \name{import_ClinVar}
 \alias{import_ClinVar}
-\title{Title}
+\title{Import ClinVar}
 \usage{
 import_ClinVar(ClinVarFile, GeneOfInterest, pathogenic = TRUE)
 }
 \arguments{
 \item{pathogenic}{}
 }
+\value{
+dataframe
+}
 \description{
-Title
+Imports the downloaded ClinVar data file, filters for the \code{GeneOfInterest}, keeping only known \code{pathogenic} variants. If \code{pathogenic} is set to \code{FALSE} all variants will be returned.
 }

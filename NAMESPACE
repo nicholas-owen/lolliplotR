@@ -1,1 +1,6 @@
 exportPattern("^[[:alpha:]]+")
+importFrom("grDevices", "colorRampPalette", "dev.off", "svg")
+importFrom("methods", "new")
+importFrom("stats", "filter")
+importFrom("utils", "download.file", "read.csv")
+importFrom("magrittr", "%>%")

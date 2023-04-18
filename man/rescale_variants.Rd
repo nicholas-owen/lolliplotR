@@ -7,11 +7,11 @@
 rescale_variants(variantInfo, transcript_grange, minIntronSize)
 }
 \arguments{
-\item{variantInfo}{`dataframe` of variant information for gene of interest}
+\item{variantInfo}{\code{dataframe} of variant information for gene of interest}
 
-\item{transcript_grange}{`GRanges` object of the transcript model for the gene of interest}
+\item{transcript_grange}{\code{GRanges} object of the transcript model for the gene of interest}
 
-\item{minIntronSize}{`numeric` vector to fix all `introns` to for representation}
+\item{minIntronSize}{\code{numeric} vector to fix all \code{introns} to for representation}
 }
 \description{
 Rescale variants based upon new intronic sizes (fixed)

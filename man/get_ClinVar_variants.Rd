@@ -10,8 +10,17 @@ get_ClinVar_variants(gene_of_interest)
 \item{gene_of_interest}{}
 }
 \value{
-dataframe of tidied NCBI ClinVar variants
+a dataframe of tidied NCBI ClinVar pathological variants specific to the gene of interest
 }
 \description{
-Get ClinVar Variants
+\code{get_ClinVar_variants()} is used to obtain the latest pathological variants for a gene of interest from the NCBI ClinVar database.
+
+This wrapper function downloads the latest ClinVar information, filters on the \code{gene_of_interest}, which is then subsequently formatted for lolliplotR processing.
+}
+\details{
+Variants will be cached for future access.
+}
+\examples{
+get_ClinVar_variants("CRB1")
+get_ClinVar_variants("SMN1")
 }

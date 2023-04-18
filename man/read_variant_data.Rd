@@ -7,12 +7,12 @@
 read_variant_data(varFile, do_count = FALSE)
 }
 \arguments{
-\item{varFile}{`path` to local variant file}
+\item{varFile}{\code{path} to local variant file}
 
-\item{do_count}{default of `FALSE`, function to count the frequency of observations of each variant}
+\item{do_count}{default of \code{FALSE}, function to count the frequency of observations of each variant}
 }
 \value{
-variant `dataframe`
+variant \code{dataframe}
 }
 \description{
 Read variant data

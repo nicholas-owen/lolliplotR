@@ -4,7 +4,7 @@
 \alias{get_gene_variants}
 \title{Get variants from NIH Clinical Tables}
 \usage{
-get_gene_variants(gene_name = GOI)
+get_gene_variants(gene_name)
 }
 \arguments{
 \item{gene_name}{character vector of HGNC symbol gene name}

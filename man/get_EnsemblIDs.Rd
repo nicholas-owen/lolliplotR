@@ -7,10 +7,10 @@
 get_EnsemblIDs(gene_of_interest = GOI)
 }
 \arguments{
-\item{gene_of_interest}{`character` vector of the HGNC symbol of the gene of interest}
+\item{gene_of_interest}{\code{character} vector of the HGNC symbol of the gene of interest}
 }
 \value{
-`transcript` and `exon` models
+\code{transcript} and \code{exon} models
 }
 \description{
 Get EnsemblID and Canonical transcript ID

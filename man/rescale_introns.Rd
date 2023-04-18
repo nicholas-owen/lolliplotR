@@ -7,12 +7,12 @@
 rescale_introns(grange, minIntronSize)
 }
 \arguments{
-\item{grange}{`GRanges` object of the transcript model for the gene of interest}
+\item{grange}{\code{GRanges} object of the transcript model for the gene of interest}
 
-\item{minIntronSize}{`numeric` vector to fix all `introns` to for representation}
+\item{minIntronSize}{\code{numeric} vector to fix all \code{introns} to for representation}
 }
 \value{
-rescaled `GRanges` object with updated `intron` sizes
+rescaled \code{GRanges} object with updated \code{intron} sizes
 }
 \description{
 Rescale introns

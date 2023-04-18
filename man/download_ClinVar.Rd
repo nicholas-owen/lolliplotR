@@ -2,10 +2,16 @@
 % Please edit documentation in R/bionickomics_utils.r
 \name{download_ClinVar}
 \alias{download_ClinVar}
-\title{Title}
+\title{Download ClinVar}
 \usage{
 download_ClinVar()
 }
+\value{
+\code{file} filename containing obtained data.
+}
 \description{
-Title
+Downloads the latest ClinVar variants from NCBI ClinVar : \code{ftp.ncbi.nlm.nih.gov/pub/clinvar}
+}
+\examples{
+download_ClinVar()
 }

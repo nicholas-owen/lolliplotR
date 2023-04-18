@@ -1,12 +1,23 @@
 
 #' Get ClinVar Variants
 #'
+#' @description
+#' `get_ClinVar_variants()` is used to obtain the latest pathological variants for a gene of interest from the NCBI ClinVar database.
+#'
+#' This wrapper function downloads the latest ClinVar information, filters on the `gene_of_interest`, which is then subsequently formatted for lolliplotR processing.
+#' @details
+#'
+#' Variants will be cached for future access.
+#'
+#' @importFrom magrittr %>%
 #' @param gene_of_interest
 #'
-#' @return dataframe of tidied NCBI ClinVar variants
+#' @return a dataframe of tidied NCBI ClinVar pathological variants specific to the gene of interest
 #' @export
 #'
 #' @examples
+#' get_ClinVar_variants("CRB1")
+#' get_ClinVar_variants("SMN1")
 get_ClinVar_variants<-function(gene_of_interest){
   clinvarfile<-download_ClinVar()
   dfClinVar<-import_ClinVar(clinvarfile, GeneOfInterest = gene_of_interest)
@@ -22,11 +33,11 @@ get_ClinVar_variants<-function(gene_of_interest){
 
 
 
-#' Title
+#' Tidy ClinVar data
 #'
 #' @param df
 #'
-#' @return
+#' @return processed
 #' @export
 #'
 #' @examples
@@ -71,12 +82,16 @@ tidy_ClinVar<-function(df){
 
 
 
-#' Title
+#' Download ClinVar
 #'
-#' @return
+#' @description
+#'
+#' Downloads the latest ClinVar variants from NCBI ClinVar : `ftp.ncbi.nlm.nih.gov/pub/clinvar`
+#' @return `file` filename containing obtained data.
 #' @export
 #'
 #' @examples
+#' download_ClinVar()
 download_ClinVar<-function(){
 
   dir<-paste0(getwd(), "/")
@@ -92,16 +107,21 @@ download_ClinVar<-function(){
   return(file)
 }
 
-#' Title
+#' Import ClinVar
+#'
+#' @description
+#'
+#' Imports the downloaded ClinVar data file, filters for the `GeneOfInterest`, keeping only known `pathogenic` variants. If `pathogenic` is set to `FALSE` all variants will be returned.
 #'
 #' @param ClinVarFile
 #' @param GeneOfInterest
 #' @param pathogenic
 #'
-#' @return
+#' @return dataframe
 #' @export
 #'
 #' @examples
+#'
 import_ClinVar<-function(ClinVarFile, GeneOfInterest, pathogenic=TRUE){
   # import file
   message("Importing ClinVar data..")
@@ -155,7 +175,16 @@ get_variants_ClinVar<-function(gene_of_interest=GOI, pathogenic=TRUE){
 
 
 
-#' Process variants from HuVar output
+#' Process variants from HuVarBase output
+#'
+#' @description
+#' `process_HuVarOutput` allows the importing of raw HuVarBase variant information to be suitable for input into lolliplotR.
+#'
+#' @details
+#' For further information on HuVarBase, check out [HuVarBase: A human variant database with comprehensive information at gene and protein levels](https://doi.org/10.1371/journal.pone.0210475)
+#'
+#' _Note_: currently the HuVarBase server is under maintenance -  information can be copied and pasted into text format and used within this function.
+#'
 #'
 #' @param filename path to the HuVar output saved data
 #' @param phenotypes_to_keep list object of characters detailing the disease phenotypes to be kept
@@ -191,18 +220,21 @@ process_HuVarOutput<-function(filename=huvarfile, phenotypes_to_keep="none"){
 
 #' Get variants from NIH Clinical Tables
 #'
+#' @description
+#' This function will obtain the latest information for a `gene_name`
+#'
 #' @param gene_name character vector of HGNC symbol gene name
 #'
 #' @return dataframe of cleaned and filtered disease causing variants for the gene of interest
 #' @export
 #'
 #' @examples
-get_gene_variants<-function(gene_name=GOI){
+get_gene_variants<-function(gene_name){
   # get variants for GOI from https://clinicaltables.nlm.nih.gov/apidoc/variants/v4/doc.html#params
 
   # https://clinicaltables.nlm.nih.gov/demo.html?db=variants
   message("Requesting known disease causing variants from ClinicalTables..")
-  url<-paste0("https://clinicaltables.nlm.nih.gov/api/variants/v4/search?terms=", GOI,
+  url<-paste0("https://clinicaltables.nlm.nih.gov/api/variants/v4/search?terms=", gene_name,
               "&sf=GeneSymbol&maxList=500&df=AlternateAllele,AlleleID,AminoAcidChange,Chromosome,ChromosomeAccession,Cytogenetic,dbSNP,GeneID,GeneSymbol,GenomicLocation,hgnc_id,hgnc_id_num,HGVS_c,HGVS_exprs,HGVS_p,Name,NucleotideChange,phenotypes,phenotype,PhenotypeIDS,PhenotypeList,RefSeqID,ReferenceAllele,Start,Stop,Type,VariationID")
   res<- httr::GET(url)
 

@@ -15,16 +15,16 @@ create_gene_lolliplot(
 )
 }
 \arguments{
-\item{gene_name}{`character` vector of the HGNC symbol gene of interest}
+\item{gene_name}{\code{character} vector of the HGNC symbol gene of interest}
 
-\item{variant_filename}{provided `csv` formatted variant file or `dataframe` of variants}
+\item{variant_filename}{provided \code{csv} formatted variant file or \code{dataframe} of variants}
 
-\item{variant_input_type}{`file` or `dataframe` depending on input provided}
+\item{variant_input_type}{\code{file} or \code{dataframe} depending on input provided}
 
-\item{exon_height}{`numeric` representing the draw height of `exon` features}
+\item{exon_height}{\code{numeric} representing the draw height of \code{exon} features}
 }
 \value{
-output to gene symbol prefixed `SVG` formatted plots, and printed to local graphics device
+output to gene symbol prefixed \code{SVG} formatted plots, and printed to local graphics device
 }
 \description{
 Create lolliplot gene plot
