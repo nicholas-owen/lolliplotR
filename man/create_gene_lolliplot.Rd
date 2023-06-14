@@ -21,11 +21,20 @@ create_gene_lolliplot(
 
 \item{variant_input_type}{\code{file} or \code{dataframe} depending on input provided}
 
+\item{varPalette}{RColorBrewer palette for coloring exons}
+
+\item{color_by_data}{sets which data to use for lolliplot coloring}
+
 \item{exon_height}{\code{numeric} representing the draw height of \code{exon} features}
+
+\item{min_intron_size}{sets the minimum intron size for intron rescaling}
 }
 \value{
 output to gene symbol prefixed \code{SVG} formatted plots, and printed to local graphics device
 }
 \description{
 Create lolliplot gene plot
+}
+\examples{
+create_gene_lolliplot("CRB1", "ClinVar", "Reds", 30, 50)
 }

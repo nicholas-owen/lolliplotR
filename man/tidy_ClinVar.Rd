@@ -15,3 +15,6 @@ processed
 \description{
 Tidy ClinVar data
 }
+\examples{
+tidy_ClinVar(exampledata)
+}

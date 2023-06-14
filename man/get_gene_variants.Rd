@@ -13,5 +13,8 @@ get_gene_variants(gene_name)
 dataframe of cleaned and filtered disease causing variants for the gene of interest
 }
 \description{
-Get variants from NIH Clinical Tables
+This function will obtain the latest information for a \code{gene_name}
+}
+\examples{
+gene_gene_vaariants("CRB1")
 }

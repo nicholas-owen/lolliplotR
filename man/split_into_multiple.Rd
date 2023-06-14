@@ -8,9 +8,19 @@ https://stackoverflow.com/questions/4350440/split-data-frame-string-column-into-
 split_into_multiple(column, pattern = ", ", into_prefix)
 }
 \arguments{
-\item{into_prefix}{}
+\item{column}{column name to split}
+
+\item{pattern}{split on specific regex pattern}
+
+\item{into_prefix}{split into columns with prefix}
+}
+\value{
+dataframe
 }
 \description{
 Title
 https://stackoverflow.com/questions/4350440/split-data-frame-string-column-into-multiple-columns#4351918
+}
+\examples{
+split_into_multiple("test", "-", "prefix")
 }

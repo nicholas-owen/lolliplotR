@@ -13,6 +13,12 @@ rescale_variants(variantInfo, transcript_grange, minIntronSize)
 
 \item{minIntronSize}{\code{numeric} vector to fix all \code{introns} to for representation}
 }
+\value{
+rescaled GRanges object
+}
 \description{
 Rescale variants based upon new intronic sizes (fixed)
+}
+\examples{
+rescale_variants(variantdataframe, GRangeObject, minIntronSize)
 }

@@ -17,3 +17,35 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(lolliplotR)
 ```
+
+# About
+
+This is the documentation of the LolliplotR package. Examples were generated under version 0.1.
+
+The stable version can be obtained from XXXX, however the most up-to-date version will always be on GitHub, which can be installed using:
+
+```{r}
+library(devtools)
+install_github("nicholas-owen/lolliplotR")
+```
+
+The lolliplotR package is inspired by XXX package to enhance the generation of lolliplots for gene features (such as transcripts) or amino acid sequences annotated with known variants via common databases such as ClinVar.
+
+If you use lolliplotR in your publications, I would appreciate it if you cite this DOI or the preprint on bioariv.
+
+------------------------------------------------------------------------
+
+# Introduction
+
+Lolliplots are an efficient way to visualise positional information on genomic features, such as transcripts, exons etc, to reveal potential associations and patterns in the data. The lolliplotR package provides a highly flexible way to generate multiple plots that support automatic annotation and custom annotations of the data. This package was also designed with those without technical knowledge of the underlying code to be able to load the package and generate highly detailed plots of genes of interest for publication.
+
+The following sections will outline the generation of transcript lolliplots using known variants for a gene of interest as well as the amino acid sequence lolliplot generation.
+
+Information on the supported sources of variant data will be outlined, as well as those to be added on the roadmap.
+
+Custom annotations can be generated, which will be discussed.
+
+
+# Examples
+
+

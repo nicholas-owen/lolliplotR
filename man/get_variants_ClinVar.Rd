@@ -7,8 +7,16 @@
 get_variants_ClinVar(gene_of_interest = GOI, pathogenic = TRUE)
 }
 \arguments{
-\item{pathogenic}{}
+\item{gene_of_interest}{string of the HGNC accepted gene symbol}
+
+\item{pathogenic}{boolean for limiting to pathogenic variants only}
+}
+\value{
+dataframe
 }
 \description{
 Title
+}
+\examples{
+get_variants_ClinVar("CRB1", pathogenic=TRUE)
 }

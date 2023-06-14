@@ -4,14 +4,14 @@
 #' @param gene_name `character` vector of the HGNC symbol gene of interest
 #' @param variant_filename provided `csv` formatted variant file or `dataframe` of variants
 #' @param variant_input_type `file` or `dataframe` depending on input provided
-#' @param varPalette
-#' @param color_by_data
+#' @param varPalette RColorBrewer palette for feature coloring
+#' @param color_by_data sets which data to use to color the lolliplot heads
 #' @param exon_height `numeric` representing the draw height of `exon` features
 #'
 #' @return output to gene symbol prefixed `SVG` formatted plots, and printed to local graphics device
 #' @export
 #'
-#' @examples
+#' @examples create_peptide_lolliplot("CRB1", "file", "Reds", 40)
 #'
 create_peptide_lolliplot<-function(gene_name=GOI, variant_filename=varFile, variant_input_type=varInputType, varPalette=varPalette, color_by_data="published", exon_height=exonHeight){
   stopifnot("`gene_name` must be a character." = is.character(gene_name))

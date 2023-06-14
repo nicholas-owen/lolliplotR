@@ -7,11 +7,19 @@
 import_ClinVar(ClinVarFile, GeneOfInterest, pathogenic = TRUE)
 }
 \arguments{
-\item{pathogenic}{}
+\item{ClinVarFile}{downloaded ClinVar database file}
+
+\item{GeneOfInterest}{string of the HGNC accepted gene symbol}
+
+\item{pathogenic}{boolean for limiting to pathogenic only variants}
 }
 \value{
 dataframe
 }
 \description{
 Imports the downloaded ClinVar data file, filters for the \code{GeneOfInterest}, keeping only known \code{pathogenic} variants. If \code{pathogenic} is set to \code{FALSE} all variants will be returned.
+}
+\examples{
+import_ClinVar("ClinVar22-02-23", "CRB1", pathogenic=TRUE)
+
 }

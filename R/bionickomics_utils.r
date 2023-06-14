@@ -40,7 +40,7 @@ get_ClinVar_variants<-function(gene_of_interest){
 #' @return processed
 #' @export
 #'
-#' @examples
+#' @examples tidy_ClinVar(exampledata)
 tidy_ClinVar<-function(df){
   #check format is correct
 
@@ -113,14 +113,14 @@ download_ClinVar<-function(){
 #'
 #' Imports the downloaded ClinVar data file, filters for the `GeneOfInterest`, keeping only known `pathogenic` variants. If `pathogenic` is set to `FALSE` all variants will be returned.
 #'
-#' @param ClinVarFile
-#' @param GeneOfInterest
-#' @param pathogenic
+#' @param ClinVarFile downloaded ClinVar database file
+#' @param GeneOfInterest string of the HGNC accepted gene symbol
+#' @param pathogenic boolean for limiting to pathogenic only variants
 #'
 #' @return dataframe
 #' @export
 #'
-#' @examples
+#' @examples import_ClinVar("ClinVar22-02-23", "CRB1", pathogenic=TRUE)
 #'
 import_ClinVar<-function(ClinVarFile, GeneOfInterest, pathogenic=TRUE){
   # import file
@@ -139,13 +139,13 @@ import_ClinVar<-function(ClinVarFile, GeneOfInterest, pathogenic=TRUE){
 
 #' Title
 #'
-#' @param gene_of_interest
-#' @param pathogenic
+#' @param gene_of_interest string of the HGNC accepted gene symbol
+#' @param pathogenic boolean for limiting to pathogenic variants only
 #'
-#' @return
+#' @return dataframe
 #' @export
 #'
-#' @examples
+#' @examples get_variants_ClinVar("CRB1", pathogenic=TRUE)
 get_variants_ClinVar<-function(gene_of_interest=GOI, pathogenic=TRUE){
   message("Requesting known disease causing variants from ClinVar..")
   url<-paste0("https://www.ncbi.nlm.nih.gov/clinvar?term=", gene_of_interest,
@@ -192,7 +192,7 @@ get_variants_ClinVar<-function(gene_of_interest=GOI, pathogenic=TRUE){
 #' @return dataframe of cleaned and filtered HuVar single nucleotide variants
 #' @export
 #'
-#' @examples
+#' @examples process_HuVarOutput("huvar_CRB1_variants.txt")
 process_HuVarOutput<-function(filename=huvarfile, phenotypes_to_keep="none"){
   if(file.exists(filename)){
     message("Loading HuVar variant file..")
@@ -228,7 +228,7 @@ process_HuVarOutput<-function(filename=huvarfile, phenotypes_to_keep="none"){
 #' @return dataframe of cleaned and filtered disease causing variants for the gene of interest
 #' @export
 #'
-#' @examples
+#' @examples gene_gene_vaariants("CRB1")
 get_gene_variants<-function(gene_name){
   # get variants for GOI from https://clinicaltables.nlm.nih.gov/apidoc/variants/v4/doc.html#params
 
@@ -277,10 +277,10 @@ get_gene_variants<-function(gene_name){
 #' @param transcript_grange `GRanges` object of the transcript model for the gene of interest
 #' @param minIntronSize `numeric` vector to fix all `introns` to for representation
 #'
-#' @return
+#' @return rescaled GRanges object
 #' @export
 #'
-#' @examples
+#' @examples rescale_variants(variantdataframe, GRangeObject, minIntronSize)
 rescale_variants<-function(variantInfo, transcript_grange, minIntronSize){
   #exon totals
   exonTotals<-list()
@@ -332,7 +332,7 @@ rescale_variants<-function(variantInfo, transcript_grange, minIntronSize){
 #' @return rescaled `GRanges` object with updated `intron` sizes
 #' @export
 #'
-#' @examples
+#' @examples rescale_introns(GRangeObject, IntronSize)
 rescale_introns<-function(grange, minIntronSize){
   #granges_reduce_introns(grange, minIntronSize)
   message("Moving start to zero based positions..")
@@ -394,7 +394,7 @@ create_variant_track<-function(dfVariants, transcript_structure){
 #' @return `transcript` and `exon` models
 #' @export
 #'
-#' @examples
+#' @examples get_EnsemblIDs("CRB1")
 get_EnsemblIDs<-function(gene_of_interest=GOI){
   # support human for now
   message("Identifying EnsemblID for gene: ", gene_of_interest)
@@ -466,10 +466,10 @@ get_EnsemblIDs<-function(gene_of_interest=GOI){
 #'
 #' @param transcript_of_interest
 #'
-#' @return
+#' @return details of the peptide information from Ensembl
 #' @export
 #'
-#' @examples
+#' @examples get_Ensembl_peptide("CRB1")
 get_Ensembl_peptide<-function(gene_of_interest){
   # support human for now
   message("Identifying Ensembl protein information for gene: ", gene_of_interest)
@@ -538,7 +538,7 @@ get_Ensembl_peptide<-function(gene_of_interest){
 #' @return variant `dataframe`
 #' @export
 #'
-#' @examples
+#' @examples read_variant_data("variant.txt")
 read_variant_data<-function(varFile, do_count=FALSE){
   if(file.exists(varFile)){
     message("Loading variant file..")
@@ -579,14 +579,14 @@ read_variant_data<-function(varFile, do_count=FALSE){
 
 #' Title
 #' https://stackoverflow.com/questions/4350440/split-data-frame-string-column-into-multiple-columns#4351918
-#' @param column
-#' @param pattern
-#' @param into_prefix
+#' @param column column name to split
+#' @param pattern split on specific regex pattern
+#' @param into_prefix split into columns with prefix
 #'
-#' @return
+#' @return dataframe
 #' @export
 #'
-#' @examples
+#' @examples split_into_multiple("test", "-", "prefix")
 split_into_multiple <- function(column, pattern = ", ", into_prefix){
   cols <- str_split_fixed(column, pattern, n = Inf)
   # Sub out the ""'s returned by filling the matrix to the right, with NAs which are useful

@@ -20,6 +20,10 @@ create_peptide_lolliplot(
 
 \item{variant_input_type}{\code{file} or \code{dataframe} depending on input provided}
 
+\item{varPalette}{RColorBrewer palette for feature coloring}
+
+\item{color_by_data}{sets which data to use to color the lolliplot heads}
+
 \item{exon_height}{\code{numeric} representing the draw height of \code{exon} features}
 }
 \value{
@@ -27,4 +31,8 @@ output to gene symbol prefixed \code{SVG} formatted plots, and printed to local 
 }
 \description{
 Create lolliplot peptide plot
+}
+\examples{
+create_peptide_lolliplot("CRB1", "file", "Reds", 40)
+
 }

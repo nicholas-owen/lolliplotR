@@ -17,3 +17,6 @@ rescaled \code{GRanges} object with updated \code{intron} sizes
 \description{
 Rescale introns
 }
+\examples{
+rescale_introns(GRangeObject, IntronSize)
+}

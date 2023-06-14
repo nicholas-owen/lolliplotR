@@ -22,3 +22,6 @@ For further information on HuVarBase, check out \href{https://doi.org/10.1371/jo
 
 \emph{Note}: currently the HuVarBase server is under maintenance -  information can be copied and pasted into text format and used within this function.
 }
+\examples{
+process_HuVarOutput("huvar_CRB1_variants.txt")
+}

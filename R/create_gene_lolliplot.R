@@ -4,15 +4,15 @@
 #' @param gene_name `character` vector of the HGNC symbol gene of interest
 #' @param variant_filename provided `csv` formatted variant file or `dataframe` of variants
 #' @param variant_input_type `file` or `dataframe` depending on input provided
-#' @param varPalette
-#' @param color_by_data
-#' @param min_intron_size
+#' @param varPalette RColorBrewer palette for coloring exons
+#' @param color_by_data sets which data to use for lolliplot coloring
+#' @param min_intron_size sets the minimum intron size for intron rescaling
 #' @param exon_height `numeric` representing the draw height of `exon` features
 #'
 #' @return output to gene symbol prefixed `SVG` formatted plots, and printed to local graphics device
 #' @export
 #'
-#' @examples
+#' @examples create_gene_lolliplot("CRB1", "ClinVar", "Reds", 30, 50)
 create_gene_lolliplot<-function(gene_name=GOI, variant_filename=varFile, variant_input_type=varInputType, varPalette=varPalette, color_by_data="published", exon_height=exonHeight, min_intron_size=minIntronSize){
   stopifnot("`gene_name` must be a character." = is.character(gene_name))
   #stopifnot("`minIntronSize` must be a numeric" = is.numeric(minIntronSize))

@@ -15,3 +15,6 @@ get_EnsemblIDs(gene_of_interest = GOI)
 \description{
 Get EnsemblID and Canonical transcript ID
 }
+\examples{
+get_EnsemblIDs("CRB1")
+}

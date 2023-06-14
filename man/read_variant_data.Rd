@@ -17,3 +17,6 @@ variant \code{dataframe}
 \description{
 Read variant data
 }
+\examples{
+read_variant_data("variant.txt")
+}
